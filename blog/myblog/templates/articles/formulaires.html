@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer un nouvel article</title>
+    {% load static %}
+    {% load form_filters %}
+    <!-- Inclure Bootstrap depuis les fichiers locaux -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    <!-- Barre de Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Mon Blog</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'articles' %}">Accueil</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'formulaire' %}">Créer un article</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    <div class="container mt-5">
+        <h1 class="text-center">Créer un nouvel article</h1>
+        
+        <!-- Le formulaire doit gérer l'envoi de fichiers, donc ajout de enctype -->
+        <form method="post" enctype="multipart/form-data" class="mt-4">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="id_title" class="form-label">Titre de l'article</label>
+                {{ form.title|add_class:"form-control" }}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_summary" class="form-label">Résumé de l'article</label>
+                {{ form.summary|add_class:"form-control" }}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_content" class="form-label">Contenu</label>
+                {{ form.content|add_class:"form-control" }}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_date_pub" class="form-label">Date de publication</label>
+                {{ form.date_pub|add_class:"form-control" }}
+            </div>
+
+            <!-- Nouveau champ pour l'ajout de lien -->
+            <div class="mb-3">
+                <label for="id_link" class="form-label">Lien (facultatif)</label>
+                {{ form.link|add_class:"form-control" }}
+            </div>
+
+            <!-- Nouveau champ pour l'image -->
+            <div class="mb-3">
+                <label for="id_image" class="form-label">Ajouter une image</label>
+                {{ form.image|add_class:"form-control" }}
+            </div>
+
+            <!-- Nouveau champ pour la catégorie -->
+            <div class="mb-3">
+                <label for="id_category" class="form-label">Catégorie</label>
+                {{ form.category|add_class:"form-control" }}
+            </div>
+
+            <!-- Nouveau champ pour les tags -->
+            <div class="mb-3">
+                <label for="id_tags" class="form-label">Tags</label>
+                {{ form.tags|add_class:"form-control" }}
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Soumettre</button>
+        </form>
+    </div>
+    
+    <!-- Script JS de Bootstrap depuis les fichiers locaux -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

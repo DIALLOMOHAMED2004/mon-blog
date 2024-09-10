@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supprimer un article</title>
+    {% load static %}
+    <!-- Inclure Bootstrap depuis les fichiers locaux -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    <!-- Barre de Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Mon Blog</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'articles' %}">Accueil</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    <div class="container mt-5">
+        <h1 class="text-center">Supprimer un article</h1>
+        
+        <p class="text-center">Êtes-vous sûr de vouloir supprimer l'article "{{ article.title }}" ?</p>
+        
+        <form method="post" class="text-center">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+            <a href="{% url 'articles' %}" class="btn btn-secondary">Annuler</a>
+        </form>
+    </div>
+    
+    <!-- Script JS de Bootstrap depuis les fichiers locaux -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

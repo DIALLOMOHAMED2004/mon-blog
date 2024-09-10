@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Articles</title>
+    {% load static %}
+    <!-- Inclure Bootstrap via le chemin local -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    <!-- Barre de Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Mon Blog</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'articles' %}">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'formulaire' %}">Créer un article</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    
+    <div class="container mt-5">
+        <h1 class="text-center">Liste des Articles</h1>
+
+        <!-- Formulaire de Recherche -->
+        <form method="get" class="mb-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="text" name="keyword" class="form-control" placeholder="Recherche par mot-clé" value="{{ request.GET.keyword }}">
+                </div>
+                <div class="col-md-4">
+                    <select name="category" class="form-control">
+                        <option value="">-- Filtrer par catégorie --</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select name="tags" class="form-control" multiple>
+                        <option value="">-- Filtrer par tag --</option>
+                        {% for tag in tags %}
+                            <option value="{{ tag.id }}" {% if tag.id|stringformat:"s" in request.GET.tags %}selected{% endif %}>{{ tag.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-12 mt-2">
+                    <button type="submit" class="btn btn-primary">Rechercher</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Tableau des Articles -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Résumé</th>
+                    <th>Détail</th>
+                    <th>Modifier</th>
+                    <th>Supprimer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for article in articles %}
+                <tr>
+                    <td>{{ article.title }}</td>
+                    <td>{{ article.summary }}</td>
+                    <td>
+                        <a href="{% url 'article_detail' article.id %}" class="btn btn-info btn-sm">Détail</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'edit_article' article.id %}" class="btn btn-warning btn-sm">Modifier</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'delete_article' article.id %}" class="btn btn-danger btn-sm">Supprimer</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Inclure Bootstrap JS -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

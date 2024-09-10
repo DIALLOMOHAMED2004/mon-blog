@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détail de l'Article</title>
+    {% load static %}
+    <!-- Inclure Bootstrap via le chemin local -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    <!-- Barre de Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Mon Blog</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'articles' %}">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'formulaire' %}">Créer un article</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center">{{ article.title }}</h1>
+
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h2 class="my-3">Résumé</h2>
+                <p>{{ article.summary }}</p>
+                
+                <h2 class="my-3">Contenu</h2>
+                <p>{{ article.content }}</p>
+                
+                {% if article.link %}
+                <h2 class="my-3">Lien</h2>
+                <p><a href="{{ article.link }}" target="_blank">{{ article.link }}</a></p>
+                {% endif %}
+                
+                {% if article.image %}
+                <h2 class="my-3">Image</h2>
+                <img src="{{ article.image.url }}" alt="Image de l'article" class="img-fluid">
+                {% endif %}
+                
+                <h2 class="my-3">Catégorie</h2>
+                <p>{{ article.category.name }}</p>
+                
+                <h2 class="my-3">Tags</h2>
+                <p>
+                    {% for tag in article.tags.all %}
+                        {{ tag.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                
+                <div class="mt-4">
+                    <a href="{% url 'articles' %}" class="btn btn-primary">Retour à la liste des articles</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inclure Bootstrap JS -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
