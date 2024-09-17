@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to To-Do List App</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Blog List App</h1>
+        <nav>
+            <ul>
+                <!-- Vérification si l'utilisateur est authentifié ou non -->
+                {% if user.is_authenticated %}
+                    <!-- Formulaire pour la déconnexion avec méthode POST -->
+                    <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Logout</button>
+                    </form>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="description">
+            <h2>MY BLOG</h2>
+            <p>Avec l'avènement des médias sociaux et des plateformes de publication en ligne, les blogs personnels sont devenus un moyen populaire pour les individus d'exprimer leurs pensées, partager leurs connaissances, et établir une présence en ligne. </p>
+            <p>Un blog permet non seulement de publier du contenu régulièrement mais aussi d'engager une communauté autour de sujets variés.</p>
+        </section>
+
+        <section class="actions">
+            <h3>Get Started Now</h3>
+
+            <!-- Vérification si l'utilisateur est connecté -->
+            {% if user.is_authenticated %}
+                <p>You are logged in as {{ user.username }}. Start managing your tasks now!</p>
+            {% else %}
+                <div class="buttons">
+                    <a href="{% url 'signup' %}" class="btn btn-primary">Sign Up</a>
+                    <a href="{% url 'login' %}" class="btn btn-secondary">Login</a>
+                    <!-- Bouton pour la liste des articles visible pour tous -->
+                    {% comment %} <a href="{% url 'articles' %}" class="btn btn-primary mt-3">View Articles</a> {% endcomment %}
+                </div>
+            {% endif %}
+            <br>
+             <!-- Bouton pour la liste des articles visible pour tous -->
+            <a href="{% url 'articles' %}" class="btn btn-primary mt-3">View Articles</a> 
+
+        </section>
+    </main>
+
+    {% comment %} <footer>
+        <p>© 2024 BLOG APPLICATION. All Rights Reserved.</p>
+    </footer> {% endcomment %}
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">  <!-- Ajout d'une feuille de style si nécessaire -->
+</head>
+<body>
+    <header>
+        <h1>To-Do List Application</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Login</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}  <!-- Affiche le formulaire en format HTML simple -->
+            <button type="submit">Login</button>
+        </form>
+
+        <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p> <!-- Lien vers la réinitialisation du mot de passe -->
+        <p>Don't have an account? <a href="{% url 'signup' %}">Sign up here</a>.</p>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 To-Do List Application</p>
+    </footer>
+</body>
+</html>

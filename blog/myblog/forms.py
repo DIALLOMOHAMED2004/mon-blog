@@ -1,10 +1,10 @@
 from django import forms
-from .models import Articles, Category, Tag
+from .models import Articles, Category, Tag,Comment
 
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = Articles
-        fields = '__all__'
+        fields = ['title', 'summary', 'content', 'date_pub', 'link', 'image', 'category', 'tags']  # Ne pas inclure 'author'
         
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Titre de l\'article'}),
@@ -36,3 +36,27 @@ class ArticleSearchForm(forms.Form):
     keyword = forms.CharField(required=False, label='Mot-clé', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Rechercher...'}))
     category = forms.ModelChoiceField(required=False, queryset=Category.objects.all(), label='Catégorie', empty_label='Toutes les catégories', widget=forms.Select(attrs={'class': 'form-control'}))
     tags = forms.ModelMultipleChoiceField(required=False, queryset=Tag.objects.all(), label='Tags', widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check'}))
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']  # Seul le contenu est requis pour l'instant
+
+        widgets = {
+            'content': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 4,
+                'placeholder': 'Écrivez votre commentaire ici...'
+            }),
+        }
+
+        labels = {
+            'content': 'Commentaire',
+        }
+
+    def clean_content(self):
+        content = self.cleaned_data.get('content')
+        if len(content) < 10:
+            raise forms.ValidationError('Le commentaire doit contenir au moins 10 caractères.')
+        return content

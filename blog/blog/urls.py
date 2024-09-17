@@ -18,12 +18,14 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
+from accounts.views import HomePageView  # Import de la vue de la page d'accueil
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('myblog.urls')),
+    path('myblog',include('myblog.urls')),
+    path('accounts/', include('accounts.urls')), 
+    path('', HomePageView.as_view(), name='home'),  # Page d'accueil
 ]
-
 # Ajouter la configuration pour les fichiers médias
 if settings.DEBUG:  # Assurez-vous d'ajouter cette condition pour éviter les erreurs en production
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

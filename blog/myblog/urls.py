@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import list_articles, create_article, edit_article, delete_article, articles_by_category, articles_by_tag, article_detail
+from .views import list_articles, create_article, edit_article, delete_article, articles_by_category, articles_by_tag, article_detail, delete_comment
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('', list_articles, name='articles'),
+    path('articles/', list_articles, name='articles'),
     path('formulaire/', create_article, name='formulaire'),
     
     # Routes pour filtrer les articles par catégorie et tag
@@ -16,5 +16,7 @@ urlpatterns = [
     # Routes pour modifier et supprimer un article
     path('articles/edit/<int:article_id>/', edit_article, name='edit_article'),
     path('articles/delete/<int:article_id>/', delete_article, name='delete_article'),
+    # Routes pour modifier et supprimer un commentaire
+    path('comments/delete/<int:comment_id>/', delete_comment, name='delete_comment'),
     
 ]

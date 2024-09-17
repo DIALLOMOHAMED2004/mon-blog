@@ -54,9 +54,57 @@
                 <h2 class="my-3">Tags</h2>
                 <p>
                     {% for tag in article.tags.all %}
-                        {{ tag.name }}{% if not forloop.last %}, {% endif %}
+                    {{ tag.name }}{% if not forloop.last %}, {% endif %}
                     {% endfor %}
                 </p>
+
+                <!-- Section des commentaires -->
+                <h2 class="my-3">Commentaires</h2>
+                <div class="comments-section">
+                    {% if comments %}
+                        {% for comment in comments %}
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ comment.author }}</h5>
+
+                                    <!-- Vérifier si l'utilisateur est l'auteur du commentaire -->
+                                    {% if request.user == comment.author %}
+                                        <!-- Formulaire d'édition de commentaire pour l'utilisateur connecté -->
+                                        <form method="POST" class="mt-2">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                                            <div class="form-group">
+                                                <textarea name="content" class="form-control">{{ comment.content }}</textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary btn-sm mt-2">Mettre à jour</button>
+                                        </form>
+                                        <!-- Bouton de suppression de commentaire -->
+                                        <form method="POST" action="{% url 'delete_comment' comment.id %}" class="mt-2">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                                        </form>
+                                    {% else %}
+                                        <!-- Si ce n'est pas l'auteur, afficher simplement le contenu du commentaire -->
+                                        <p class="card-text">{{ comment.content }}</p>
+                                    {% endif %}
+                                    <p class="card-text">
+                                        <small class="text-muted">Publié le {{ comment.date_pub }}</small>
+                                    </p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>Aucun commentaire pour cet article.</p>
+                    {% endif %}
+                </div>
+
+                <!-- Formulaire de soumission de commentaire -->
+                <h3 class="mt-5">Laisser un commentaire</h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ comment_form.as_p }}
+                    <button type="submit" class="btn btn-success mt-2">Soumettre le commentaire</button>
+                </form>
                 
                 <div class="mt-4">
                     <a href="{% url 'articles' %}" class="btn btn-primary">Retour à la liste des articles</a>
